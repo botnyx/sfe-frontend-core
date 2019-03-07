@@ -17,8 +17,6 @@ use Kevinrob\GuzzleCache\KeyValueHttpHeader;
 use Kevinrob\GuzzleCache\Strategy\GreedyCacheStrategy;
 
 
-
-
 $container['frontendconfig'] = function($c){
 
     	/*
