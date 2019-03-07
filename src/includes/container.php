@@ -4,7 +4,20 @@
 use Kevinrob\GuzzleCache;
 use Kevinrob\GuzzleCache\Storage;
 use Kevinrob\GuzzleCache\Strategy;
+
 use Doctrine\Common\Cache\FilesystemCache;
+use Doctrine\Common\Cache\PredisCache;
+
+use Kevinrob\GuzzleCache\CacheMiddleware;
+use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
+use Kevinrob\GuzzleCache\Strategy\PublicCacheStrategy;
+use Kevinrob\GuzzleCache\Storage\DoctrineCacheStorage;
+
+use Kevinrob\GuzzleCache\KeyValueHttpHeader;
+use Kevinrob\GuzzleCache\Strategy\GreedyCacheStrategy;
+
+
+
 
 $container['frontendconfig'] = function($c){
 
