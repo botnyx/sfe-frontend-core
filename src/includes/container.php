@@ -1,6 +1,10 @@
 <?php
 
 
+use Kevinrob\GuzzleCache;
+use Kevinrob\GuzzleCache\Storage;
+use Kevinrob\GuzzleCache\Strategy;
+
 $container['frontendconfig'] = function($c){
 
     	/*
@@ -43,3 +47,6 @@ $container['frontendconfig'] = function($c){
 
     	return $frontEndConfig;
 };
+
+print_r($container['frontendconfig'] );
+die();
