@@ -1,6 +1,6 @@
 <?php
 
-namespace \Botnyx\Sfe\Frontend\Core;
+namespace Botnyx\Sfe\Frontend\Core;
 
 
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,16 +20,16 @@ use Kevinrob\GuzzleCache\Strategy\GreedyCacheStrategy;
 
 
 class FrontendEndpoint {
-	
+
 	function __construct(ContainerInterface $container){
         $this->pdo  = $container->get('pdo');
-       	
+
 		$this->cacher = $container->get('cache');
 		//$this->frontEndConfig =  $container->get('frontEndConfig');
-		
+
 		$cacheDirectory = sys_get_temp_dir();
-		
-		
+
+
 		// Create default HandlerStack
 		$this->_stack = \GuzzleHttp\HandlerStack::create();
 		$this->_stack->push(
@@ -39,7 +39,7 @@ class FrontendEndpoint {
 				new FilesystemCache( $cacheDirectory )
 			  )
 			)
-		  ), 
+		  ),
 		  'cache'
 		);
 		// Initialize the client with the handler option
@@ -47,59 +47,59 @@ class FrontendEndpoint {
 			'handler' => $this->_stack,
 			'http_errors'=>false
 		]);
-		
-		
+
+
     }
-	
+
 	public function get(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
-		
-		
+
+
 		#$request->getQueryParams();
 		#$request->getUri()->getPath();
-		
+
 		#var_dump($request->getUri()->getPath());
 		#var_dump($request->getUri()->getQuery());
 		#var_dump($request->getUri()->getFragment());
-		
-		
+
+
 		//die(_SETTINGS['sfeFrontend']['clientId']);
-		
+
 		try{
 			$res = $this->client->request('GET', _SETTINGS['sfeFrontend']['sfeBackend'].'/api/sfe/'._SETTINGS['sfeFrontend']['clientId'].'/uri'.$request->getUri()->getPath()."?".http_build_query($args) );
-		
-		
+
+
 		} catch (GuzzleHttp\Exception\ClientException $e) {
 			//echo Psr7\str($e->getRequest());
 			//echo Psr7\str($e->getResponse());
 		}
-		
+
 		$status = $res->getStatusCode();
-		
+
 		if( $status == 404){
 			return $response->withStatus(404);
 		}
-		
+
 		$res = $response->write($res->getBody());
 		//$resWithExpires = $this->cache->withExpires($res, time() + 3600);
 		$responseWithCacheHeader = $this->cacher->withExpires($res, time() + 3600);
 		$responseWithCacheHeader = $this->cacher->withLastModified($responseWithCacheHeader, time() - 3600);
 		return $responseWithCacheHeader;
-		
-		
-	}
-	
-	public function getServiceWorker(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
-		
-		
 
-		
+
+	}
+
+	public function getServiceWorker(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
+
+
+
+
 		$res = $this->client->request('GET', _SETTINGS['sfeFrontend']['sfeBackend'].'/api/sfe/'._SETTINGS['sfeFrontend']['clientId'].'/ui/sw');
-		
+
 
 		return $response->write($res->getBody())->withHeader("content-type","application/javascript; charset=utf-8");
-		
-		
+
+
 		//return $response->write("xx");
 	}
-	
+
 }
