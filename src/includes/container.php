@@ -12,9 +12,7 @@ $container['frontendconfig'] = function($c){
     		if frontend is enabled, serve it...  else 403
     	*/
     	//if(array_key_exists('sfeFrontend',_SETTINGS)){
-
     	// frontend remote-Config
-
     	// Create default HandlerStack
     	$stack = GuzzleHttp\HandlerStack::create();
     	$stack->push(
