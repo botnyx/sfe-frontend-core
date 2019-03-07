@@ -4,6 +4,7 @@
 use Kevinrob\GuzzleCache;
 use Kevinrob\GuzzleCache\Storage;
 use Kevinrob\GuzzleCache\Strategy;
+use Doctrine\Common\Cache\FilesystemCache;
 
 $container['frontendconfig'] = function($c){
 
@@ -17,10 +18,10 @@ $container['frontendconfig'] = function($c){
     	// Create default HandlerStack
     	$stack = GuzzleHttp\HandlerStack::create();
     	$stack->push(
-    		  new CacheMiddleware(
-    			new PrivateCacheStrategy(
-    			  new DoctrineCacheStorage(
-    				new FilesystemCache(_SETTINGS['paths']['temp'].'/guzl')
+    		  new \Kevinrob\GuzzleCache\CacheMiddleware(
+    			new \Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy(
+    			  new \Kevinrob\GuzzleCache\Storage\DoctrineCacheStorage(
+    				new \Doctrine\Common\Cache\FilesystemCache(_SETTINGS['paths']['temp'].'/guzl')
     			  )
     			)
     		  ),
@@ -47,6 +48,3 @@ $container['frontendconfig'] = function($c){
 
     	return $frontEndConfig;
 };
-
-print_r($container['frontendconfig'] );
-die();
