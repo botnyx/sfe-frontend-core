@@ -29,7 +29,7 @@ $container['frontendconfig'] = function($c){
     	// Create default HandlerStack
     	$stack = GuzzleHttp\HandlerStack::create();
     	$stack->push(
-    		  new CacheMiddleware(
+    		  new \Kevinrob\GuzzleCache\CacheMiddleware(
     			new \Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy(
     			  new \Kevinrob\GuzzleCache\Storage\DoctrineCacheStorage(
     				new \Doctrine\Common\Cache\FilesystemCache(_SETTINGS['paths']['temp'].'/guzl')
