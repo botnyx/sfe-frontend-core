@@ -54,10 +54,11 @@ $container['frontendconfig'] = function($c){
     	}catch(Exception $e){
     		die($e->getMessage());
     	}
+		
+		#echo "<pre>";
+		#print_r($frontEndConfig);
+		#die();
 
 
-
-
-
-    	return $frontEndConfig;
+    	return $frontEndConfig->data;
 };
