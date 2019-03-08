@@ -3,6 +3,7 @@
 namespace Botnyx\Sfe\Frontend\Core;
 
 
+
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -16,7 +17,6 @@ use Kevinrob\GuzzleCache\Storage\DoctrineCacheStorage;
 
 use Kevinrob\GuzzleCache\KeyValueHttpHeader;
 use Kevinrob\GuzzleCache\Strategy\GreedyCacheStrategy;
-
 
 
 class Frontendendpoint {
