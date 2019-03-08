@@ -23,8 +23,7 @@ use Kevinrob\GuzzleCache\Strategy\GreedyCacheStrategy;
 class Endpoint {
 
 	function __construct(ContainerInterface $container){
-        $this->pdo  = $container->get('pdo');
-
+        
 		$this->cacher = $container->get('cache');
 		//$this->frontEndConfig =  $container->get('frontEndConfig');
 
@@ -64,7 +63,9 @@ class Endpoint {
 
 
 		//die(_SETTINGS['sfeFrontend']['clientId']);
-
+		error_log( _SETTINGS['sfeFrontend']['sfeBackend'].'/api/sfe/'._SETTINGS['sfeFrontend']['clientId'].'/uri'.$request->getUri()->getPath()."?".http_build_query($args) );
+		
+		
 		try{
 			$res = $this->client->request('GET', _SETTINGS['sfeFrontend']['sfeBackend'].'/api/sfe/'._SETTINGS['sfeFrontend']['clientId'].'/uri'.$request->getUri()->getPath()."?".http_build_query($args) );
 
