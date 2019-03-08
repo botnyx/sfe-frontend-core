@@ -1,7 +1,6 @@
 <?php
 
 
-
 namespace Botnyx\Sfe\Frontend;
 
 
@@ -21,7 +20,7 @@ use Kevinrob\GuzzleCache\KeyValueHttpHeader;
 use Kevinrob\GuzzleCache\Strategy\GreedyCacheStrategy;
 
 
-class Endpoints {
+class Endpoint {
 
 	function __construct(ContainerInterface $container){
         $this->pdo  = $container->get('pdo');
