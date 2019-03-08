@@ -16,6 +16,10 @@ use Kevinrob\GuzzleCache\Storage\DoctrineCacheStorage;
 //use Kevinrob\GuzzleCache\KeyValueHttpHeader;
 //use Kevinrob\GuzzleCache\Strategy\GreedyCacheStrategy;
 
+$container['cache'] = function () {
+    return new \Slim\HttpCache\CacheProvider();
+};
+
 
 $container['frontendconfig'] = function($c){
 
