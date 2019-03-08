@@ -19,7 +19,7 @@ use Kevinrob\GuzzleCache\Strategy\GreedyCacheStrategy;
 
 
 
-class FrontendEndpoint {
+class Frontendendpoint {
 
 	function __construct(ContainerInterface $container){
         $this->pdo  = $container->get('pdo');
