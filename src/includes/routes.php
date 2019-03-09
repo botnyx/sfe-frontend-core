@@ -45,19 +45,12 @@ $app->get('/expiretest',  function ( $request,  $response, array $args){
 
 		return $resWithLastMod;
 
-	})->add(new \Slim\HttpCache\Cache('public', 86400));;
+})->add(new \Slim\HttpCache\Cache('public', 86400));;
 
 
 
 
-	/* the Homepage */
-	$app->get('zz/',  function ( $request,  $response, array $args){
 
-
-
-		return $this->view->render($response, 'index.html', _SETTINGS['sfeFrontend'] );
-		//return $response->write('“There is nothing more important than a good, safe, secure home.”');
-	});
 
 
 

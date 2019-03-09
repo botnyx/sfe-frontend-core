@@ -63,12 +63,11 @@ class Endpoint {
 
 
 		//die(_SETTINGS['sfeFrontend']['clientId']);
+		error_log("yes!");
 		error_log( _SETTINGS['sfeFrontend']['sfeBackend'].'/api/sfe/'._SETTINGS['sfeFrontend']['clientId'].'/uri'.$request->getUri()->getPath()."?".http_build_query($args) );
-		
 		
 		try{
 			$res = $this->client->request('GET', _SETTINGS['sfeFrontend']['sfeBackend'].'/api/sfe/'._SETTINGS['sfeFrontend']['clientId'].'/uri'.$request->getUri()->getPath()."?".http_build_query($args) );
-
 
 		} catch (GuzzleHttp\Exception\ClientException $e) {
 			//echo Psr7\str($e->getRequest());
@@ -76,11 +75,13 @@ class Endpoint {
 		}
 
 		$status = $res->getStatusCode();
-
+		
+		error_log($status);
 		if( $status == 404){
 			return $response->withStatus(404);
 		}
-
+		
+		error_log($res->getBody());
 		$res = $response->write($res->getBody());
 		//$resWithExpires = $this->cache->withExpires($res, time() + 3600);
 		$responseWithCacheHeader = $this->cacher->withExpires($res, time() + 3600);
