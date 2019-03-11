@@ -20,6 +20,7 @@ use Kevinrob\GuzzleCache\KeyValueHttpHeader;
 use Kevinrob\GuzzleCache\Strategy\GreedyCacheStrategy;
 
 
+
 class Endpoint {
 
 	function __construct(ContainerInterface $container){
