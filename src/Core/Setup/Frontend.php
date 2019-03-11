@@ -67,7 +67,7 @@ class Frontend {
 	*/
 	public function setup (){
 		echo "\n";
-		echo "Setting up: `".$this->installedComponents[0]->name."`\n";
+		echo "Setting up: `sfe-frontend-base`\n";
 		echo "version: `".$this->installedComponents[0]->version."`\n";
 		//$installed[0]->version_normalized;
 
