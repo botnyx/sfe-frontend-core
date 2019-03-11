@@ -16,7 +16,7 @@ class Frontend {
 		$this->vendorDir = $vendorDir;
 		$this->projectDir = realpath($vendorDir . '/..');
 
-		$this->installedComponents = json_decode(\Botnyx\Sfe\Backend\Core\Setup\Backend::readfile($vendorDir."/composer/installed.json"));
+		$this->installedComponents = json_decode(\Botnyx\Sfe\Frontend\Core\Setup\Frontend::readfile($vendorDir."/composer/installed.json"));
 
 	}
 
