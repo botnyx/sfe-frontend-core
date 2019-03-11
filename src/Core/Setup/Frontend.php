@@ -156,7 +156,7 @@ class Frontend {
 
 	private function getComponentVersion($installedComponents){
 		foreach($installedComponents as $c){
-			if($c->name=="botnyx/sfe-backend-core"){
+			if($c->name=="botnyx/sfe-frontend-core"){
 				return (object)array("name"=>$c->name,
 							 "version"=>$c->version,
 							 "version_normalized"=>$c->version_normalized
