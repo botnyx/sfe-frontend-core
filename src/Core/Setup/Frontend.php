@@ -36,7 +36,7 @@ class Frontend {
 
 
 		$installer = new \Botnyx\Sfe\Frontend\Core\Setup\Frontend($vendorDir);
-	//	$installer->setup();
+		$installer->setup();
 
 
 	}
@@ -85,9 +85,9 @@ class Frontend {
 			$coreComponent = $this->getComponentVersion($this->installedComponents);
 
 			#echo "\nsettings\n";
-			#print_r($app->settings['conn']);
+			print_r($coreComponent);
 
-
+die();
 			/* create the $this->pdo instance */
 			$this->createPDO($app->settings['conn']);
 
@@ -107,7 +107,7 @@ class Frontend {
 			echo "\n No configuration found, starting setup.\n";
 			$public_html = $this->public_html();
 			$tempFolder = $this->tempFolder();
-
+die();
 			/* create the $this->pdo instance from requested credentials */
 			$dbCredentials = $this->dbCredentials();
 
