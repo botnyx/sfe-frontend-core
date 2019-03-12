@@ -81,28 +81,34 @@ class Endpoint {
 		}catch (TransferException $e) {
 			
 			//echo Psr7\str($e->getRequest());
-			
-			if ($e->hasResponse()) {
-				echo "<pre>";
-				//var_dump( \GuzzleHttp\Psr7\str($e->getResponse() ) );
-				//var_dump((string) $e->getResponse()->getBody());
+			/* 
+				A error occured.
 				
+			*/
+			if ($e->hasResponse()) {
+				/*
+					the error has a response body.
+				*/
 				if ( strpos($e->getResponse()->getHeader('Content-Type')[0],'json' ) ){
-					$remote_error = json_decode( (string) $e->getResponse()->getBody() );
+					/*
+						the reponse body is json!
 					
+					*/
+					$remote_error = json_decode( (string) $e->getResponse()->getBody() );
 					$endpointException = new \Botnyx\Sfe\Frontend\EndpointException( _SETTINGS['paths']['root'] );
-
 					return $endpointException->backendException($response,$remote_error);
 					
-					
 				}else{
-					
+					/*
+						the response body is html/text
+					*/
+					return $response->write( (string) $e->getResponse()->getBody()  );
 				}
-				#var_dump( get_class_methods ($e->getResponse() ) );
-				print_r($remote_error);
 				
-				die();
 			}else{
+				/*
+					the error has no response.
+				*/
 				$endpointException = new \Botnyx\Sfe\Frontend\EndpointException( _SETTINGS['paths']['root'] );
 
 				return $endpointException->TransferException($response,$e->getMessage(),__FILE__);
