@@ -78,10 +78,17 @@ $container['notFoundHandler'] = function ($c) {
     };
 };
 
-
 $container['phpErrorHandler'] = function ($c) {
     return function ($request, $response, $error) use ($c) {
-        return $response->withStatus(500)->withHeader('Content-Type', 'text/html')->write('CUSTOM Something went wrong!');
+        
+		#$view = new \Slim\Views\Twig(_SETTINGS['paths']['root'].'/vendor/botnyx/sfe-shared-core/templates/errorPages', [
+		#	'cache' => false
+		#]);
+		#return $view->render($response, 'HTTP404.html', [
+		#	'name' => $args['name']
+		#]);
+		
+		return $response->withStatus(500)->withHeader('Content-Type', 'text/html')->write('CUSTOM Something went wrong!');
     };
 };
 
