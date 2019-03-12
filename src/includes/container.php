@@ -73,7 +73,7 @@ $container['notFoundHandler'] = function ($c) {
 		]);
 		return $view->render($response, 'HTTP404.html', [
 			'name' => $args['name']
-		]);
+		])->withStatus(404);
 		//return $response->withStatus(404)->withHeader('Content-Type', 'text/html')->write('CUSTOM Page not found');
     };
 };
