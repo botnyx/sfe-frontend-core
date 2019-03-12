@@ -83,22 +83,12 @@ class Endpoint {
 			//echo Psr7\str($e->getRequest());
 			
 			if ($e->hasResponse()) {
-				var_dump( \GuzzleHttp\Psr7\str($e->getResponse()) );
+				//var_dump( \GuzzleHttp\Psr7\str($e->getResponse()) );
 			}
 			
 			$endpointException = new \Botnyx\Sfe\Frontend\EndpointException( _SETTINGS['paths']['root'] );
 			
 			return $endpointException->TransferException($response,$e->getMessage(),__FILE__);
-			
-			
-			
-			$_XX = explode(':',$e->getResponse() );
-			$curlErrorNo = str_replace('cURL error ','',$_XX[0]);
-			//$curlErrorNo
-			//print_r($e->getCode());
-			//print_r($e->getMessage());
-			die("mm");
-			//return $this->errorPage->TransferException($response);
 			
 			
 		}catch(\Exception $e){
