@@ -59,7 +59,22 @@ class EndpointException {
 		]);
 	}
 	
-	
+	function backendException($response,$remote_error){
+		;
+		$remote_error->status;
+		$remote_error->statusmsg;
+		$remote_error->data;
+		$errorArray = array(
+			"code"=>$remote_error->code,
+			"message"=>$remote_error->statusmsg,
+			"file"=>$remote_error->data,
+			"line"=>""
+		);
+		#print_r($errorArray);
+		#die();
+		return $this->renderError($response,503,$errorArray);
+		
+	}
 	
 	
 }
