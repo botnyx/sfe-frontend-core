@@ -12,7 +12,6 @@ use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\Common\Cache\PredisCache;
 
 
-
 class JsEndpoint{
 	
 	
