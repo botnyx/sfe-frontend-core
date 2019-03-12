@@ -32,6 +32,10 @@ foreach($container['frontendconfig']->routes as $route){
 }
 //$frontEndConfig['routes'];
 
+$app->get( '/a/js/[{path:.*}]',    '\\Botnyx\\Sfe\\Frontend\\Core\\WebAssets\\JsEndpoint:get' );
+$app->get( '/a/css/[{path:.*}]',   '\\Botnyx\\Sfe\\Frontend\\Core\\WebAssets\\CssEndpoint:get' );
+$app->get( '/a/fonts/[{path:.*}]', '\\Botnyx\\Sfe\\Frontend\\Core\\WebAssets\\FontEndpoint:get' );
+
 
 $app->get('/expiretest',  function ( $request,  $response, array $args){
 
