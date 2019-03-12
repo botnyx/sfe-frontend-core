@@ -16,7 +16,7 @@ class FontEndpoint{
 	function __construct(ContainerInterface $container){
 		$this->cacher = $container->get('cache');
 		
-		$this->assetProxy = new \Botnyx\Sfe\Frontend\Core\WebAssets\AssetProxy($container);
+		$this->assetProxy = new Botnyx\Sfe\Shared\WebAssets\AssetProxy($container);
 	}
 	
 	function get(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
