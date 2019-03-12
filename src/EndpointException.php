@@ -31,7 +31,7 @@ class EndpointException {
 			"line"=>$error->getLine()
 		);
 		
-		return $this->renderError(500,$errorArray);
+		return $this->renderError($response,500,$errorArray);
 	}
 	
 	function TransferException($response,$error){
@@ -47,11 +47,11 @@ class EndpointException {
 			"line"=>""
 		);
 		
-		return $this->renderError(502,$errorArray);
+		return $this->renderError($response,502,$errorArray);
 		
 	}
 	
-	function renderError($errorcode,$errorArray){
+	function renderError($response,$errorcode,$errorArray){
 		return $this->view->render($response, 'HTTP'.$errorcode.'.html', [
 			'debug'=>$this->debug,
 			'error' => $errorArray
