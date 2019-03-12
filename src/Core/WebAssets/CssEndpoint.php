@@ -33,6 +33,8 @@ class CssEndpoint{
 			if($e->getCode()==404){
 				return $this->assetProxy->e404($response);
 				//return $response->withStatus(404);
+			}else{
+				return $response->withStatus( $e->getCode() );
 			}
 			//$e->getCode();
 			
