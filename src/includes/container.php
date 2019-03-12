@@ -68,7 +68,7 @@ $container['frontendconfig'] = function($c){
 //Override the default Not Found Handler before creating App
 $container['notFoundHandler'] = function ($c) {
     return function ($request, $response) use ($c) {
-        $view = new \Slim\Views\Twig(_SETTINGS['paths']['templates'].'/error', [
+        $view = new \Slim\Views\Twig(_SETTINGS['paths']['root'].'/vendor/botnyx/sfe-shared-core/errorPages', [
 			'cache' => false
 		]);
 		return $view->render($response, 'HTTP404.html', [
