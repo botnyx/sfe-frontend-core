@@ -34,7 +34,7 @@ class EndpointException {
 		return $this->renderError($response,500,$errorArray);
 	}
 	
-	function TransferException($response,$error){
+	function TransferException($response,$error,$file=""){
 		$_XX = explode(':',$error,2 );
 		$curlErrorNo = str_replace('cURL error ','',$_XX[0]);
 		#print_r($curlErrorNo);
@@ -43,10 +43,11 @@ class EndpointException {
 		$errorArray = array(
 			"code"=>$curlErrorNo,
 			"message"=>$error,
-			"file"=>"",
+			"file"=>$file,
 			"line"=>""
 		);
-		
+		#print_r($errorArray);
+		#die();
 		return $this->renderError($response,502,$errorArray);
 		
 	}

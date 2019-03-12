@@ -88,7 +88,7 @@ class Endpoint {
 			
 			$endpointException = new \Botnyx\Sfe\Frontend\EndpointException( _SETTINGS['paths']['root'] );
 			
-			return $endpointException->TransferException($response,$e->getMessage());
+			return $endpointException->TransferException($response,$e->getMessage(),__FILE__);
 			
 			
 			
