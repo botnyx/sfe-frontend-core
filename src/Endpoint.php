@@ -19,7 +19,10 @@ use Kevinrob\GuzzleCache\Storage\DoctrineCacheStorage;
 use Kevinrob\GuzzleCache\KeyValueHttpHeader;
 use Kevinrob\GuzzleCache\Strategy\GreedyCacheStrategy;
 
-
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ClientException;
+use	GuzzleHttp\Exception\TransferException;
 
 class Endpoint {
 
@@ -45,10 +48,11 @@ class Endpoint {
 		);
 		// Initialize the client with the handler option
 		$this->client = new \GuzzleHttp\Client([
-			'handler' => $this->_stack,
-			'http_errors'=>false
+			/*'handler' => $this->_stack,*/
+			'http_errors'=>true
 		]);
-
+		
+		$this->errorPage = new \Botnyx\Sfe\Frontend\EndpointException( _SETTINGS['paths']['root']);
 
     }
 
@@ -66,15 +70,42 @@ class Endpoint {
 		//die(_SETTINGS['sfeFrontend']['clientId']);
 		//error_log("yes!");
 		error_log( _SETTINGS['sfeFrontend']['sfeBackend'].'/api/sfe/'._SETTINGS['sfeFrontend']['clientId'].'/uri'.$request->getUri()->getPath()."?".http_build_query($args) );
-		
 		try{
-			$res = $this->client->request('GET', _SETTINGS['sfeFrontend']['sfeBackend'].'/api/sfe/'._SETTINGS['sfeFrontend']['clientId'].'/uri'.$request->getUri()->getPath()."?".http_build_query($args) );
+			$res = $this->client->request('GET', _SETTINGS['sfeFrontend']['sfeBackend'].'xx/api/sfe/'._SETTINGS['sfeFrontend']['clientId'].'/uri'.$request->getUri()->getPath()."?".http_build_query($args) );
 
-		} catch (GuzzleHttp\Exception\ClientException $e) {
+		} catch (ClientException $e) {
+			
+			echo Psr7\str($e->getRequest());
+			echo Psr7\str($e->getResponse());
+			
+		}catch (TransferException $e) {
+			
 			//echo Psr7\str($e->getRequest());
-			//echo Psr7\str($e->getResponse());
+			
+			if ($e->hasResponse()) {
+				var_dump( \GuzzleHttp\Psr7\str($e->getResponse()) );
+			}
+			
+			$endpointException = new \Botnyx\Sfe\Frontend\EndpointException( _SETTINGS['paths']['root'] );
+			
+			return $endpointException->TransferException($response,$e->getMessage());
+			
+			
+			
+			$_XX = explode(':',$e->getResponse() );
+			$curlErrorNo = str_replace('cURL error ','',$_XX[0]);
+			//$curlErrorNo
+			//print_r($e->getCode());
+			//print_r($e->getMessage());
+			die("mm");
+			//return $this->errorPage->TransferException($response);
+			
+			
+		}catch(\Exception $e){
+			var_dump($e->getMessage());
+			var_dump($e->getCode());
 		}
-
+		die("x");
 		$status = $res->getStatusCode();
 		
 		error_log($status);
