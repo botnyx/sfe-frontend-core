@@ -64,7 +64,7 @@ class Endpoint {
 
 
 		//die(_SETTINGS['sfeFrontend']['clientId']);
-		error_log("yes!");
+		//error_log("yes!");
 		error_log( _SETTINGS['sfeFrontend']['sfeBackend'].'/api/sfe/'._SETTINGS['sfeFrontend']['clientId'].'/uri'.$request->getUri()->getPath()."?".http_build_query($args) );
 		
 		try{
@@ -82,7 +82,7 @@ class Endpoint {
 			return $response->withStatus(404);
 		}
 		
-		error_log($res->getBody());
+		//error_log($res->getBody());
 		$res = $response->write($res->getBody());
 		//$resWithExpires = $this->cache->withExpires($res, time() + 3600);
 		$responseWithCacheHeader = $this->cacher->withExpires($res, time() + 3600);
