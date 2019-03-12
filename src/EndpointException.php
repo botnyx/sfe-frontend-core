@@ -56,7 +56,7 @@ class EndpointException {
 		return $this->view->render($response, 'HTTP'.$errorcode.'.html', [
 			'debug'=>$this->debug,
 			'error' => $errorArray
-		]);
+		])->withStatus($errorcode);
 	}
 	
 	function backendException($response,$remote_error){
