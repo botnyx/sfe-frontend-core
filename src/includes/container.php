@@ -62,3 +62,35 @@ $container['frontendconfig'] = function($c){
 
     	return $frontEndConfig->data;
 };
+
+
+
+//Override the default Not Found Handler before creating App
+$container['notFoundHandler'] = function ($c) {
+    return function ($request, $response) use ($c) {
+        $view = new \Slim\Views\Twig(_SETTINGS['paths']['templates'].'/error', [
+			'cache' => false
+		]);
+		return $view->render($response, 'HTTP404.html', [
+			'name' => $args['name']
+		]);
+		//return $response->withStatus(404)->withHeader('Content-Type', 'text/html')->write('CUSTOM Page not found');
+    };
+};
+
+
+$container['phpErrorHandler'] = function ($c) {
+    return function ($request, $response, $error) use ($c) {
+        return $response->withStatus(500)->withHeader('Content-Type', 'text/html')->write('CUSTOM Something went wrong!');
+    };
+};
+
+
+
+
+
+
+
+
+
+
