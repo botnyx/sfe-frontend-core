@@ -105,7 +105,7 @@ class Endpoint {
 			var_dump($e->getMessage());
 			var_dump($e->getCode());
 		}
-		die("x");
+		//die("x");
 		$status = $res->getStatusCode();
 		
 		error_log($status);
