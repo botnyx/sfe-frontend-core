@@ -19,7 +19,7 @@ class CssEndpoint{
 		
 		$this->assetProxy = new \Botnyx\Sfe\Shared\WebAssets\AssetProxy($container);
 		
-		$this->allowOrigin = '*';
+		$this->allowOrigin = $container->get("settings")['paths']['url'];
 		
 	}
 	

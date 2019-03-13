@@ -19,12 +19,15 @@ class JsEndpoint{
 	function __construct(ContainerInterface $container){
 		$this->cacher = $container->get('cache');
 		
+		$this->container = $container;
+		
 		$this->assetProxy = new \Botnyx\Sfe\Shared\WebAssets\AssetProxy($container);
 		
-		$this->allowOrigin = '*';
+		$this->allowOrigin = $container->get("settings")['paths']['url'];
 	}
 	
 	function get(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
+		
 		
 		try{
 			$res =  $this->assetProxy->get($response, _SETTINGS['sfeFrontend']['sfeBackend']."/_/assets/js/".$args['path']);		
@@ -38,7 +41,9 @@ class JsEndpoint{
 			//$e->getCode();
 			
 		}
+		//print_r($res);
 		
+		//die(_SETTINGS['sfeFrontend']['sfeBackend']."/_/assets/js/".$args['path']);
 		
 		
 		return $res->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);
