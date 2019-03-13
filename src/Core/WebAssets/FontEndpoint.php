@@ -17,28 +17,28 @@ class FontEndpoint{
 		$this->cacher = $container->get('cache');
 		
 		$this->assetProxy = new \Botnyx\Sfe\Shared\WebAssets\AssetProxy($container);
+		
+		$this->allowOrigin = '*';
 	}
 	
 	function get(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
 		
-		//$parsedPath = $this->parsePath($args['path'],$request->getAttributes('route')['routeInfo']);
-		
-		//$this->assetProxy->get("/_/assets/js/".$args['path']);
-		//$this->assetProxy->get("/_/assets/fonts/".$args['path']);
-		
 		try{
-			return  $this->assetProxy->get($response, _SETTINGS['sfeFrontend']['sfeBackend']."/_/assets/js/".$args['path']);		
+			$res =  $this->assetProxy->get($response, _SETTINGS['sfeFrontend']['sfeBackend']."/_/assets/fonts/".$args['path']);		
 		}catch(\Exception $e){
 			if($e->getCode()==404){
-				return $this->assetProxy->e404($response);
+				return $this->assetProxy->e404($response)->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);;
 				//return $response->withStatus(404);
 			}else{
-				return $response->withStatus( $e->getCode() );
+				return $response->withStatus( $e->getCode() )->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);;
 			}
 			//$e->getCode();
 			
 		}
 		
+		
+		
+		return $res->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);
 		
 	}
 	

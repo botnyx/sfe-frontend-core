@@ -20,42 +20,28 @@ class JsEndpoint{
 		$this->cacher = $container->get('cache');
 		
 		$this->assetProxy = new \Botnyx\Sfe\Shared\WebAssets\AssetProxy($container);
+		
+		$this->allowOrigin = '*';
 	}
 	
 	function get(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
 		
-		//$parsedPath = $this->parsePath($args['path'],$request->getAttributes('route')['routeInfo']);
-		
-		//$this->assetProxy->get("/_/assets/js/".$args['path']);
-		//$this->assetProxy->get("/_/assets/fonts/".$args['path']);
-		
-		#echo _SETTINGS['sfeFrontend']['sfeBackend']."/_/assets/js/".$args['path'];
-		#die();
-		
 		try{
-			return  $this->assetProxy->get($response, _SETTINGS['sfeFrontend']['sfeBackend']."/_/assets/js/".$args['path']);		
+			$res =  $this->assetProxy->get($response, _SETTINGS['sfeFrontend']['sfeBackend']."/_/assets/js/".$args['path']);		
 		}catch(\Exception $e){
 			if($e->getCode()==404){
-				return $this->assetProxy->e404($response);
+				return $this->assetProxy->e404($response)->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);;
 				//return $response->withStatus(404);
 			}else{
-				return $response->withStatus( $e->getCode() );
+				return $response->withStatus( $e->getCode() )->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);;
 			}
 			//$e->getCode();
 			
 		}
 		
 		
-		/*
-		die();
-		return $this->assetProxy->responseWithHeaders($response,$returnedData);
 		
-		
-		$res = $response->write( $returnedData['html'] )->withHeader('Content-Type',$returnedData['Content-Type']);
-		//$resWithExpires = $this->cache->withExpires($res, time() + 3600);
-		$responseWithCacheHeader = $this->cacher->withExpires($res, time() + 3600);
-		$responseWithCacheHeader = $this->cacher->withLastModified($responseWithCacheHeader, $returnedData['Last-Modified'] );
-		return $responseWithCacheHeader;*/
+		return $res->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);
 		
 	}
 	
