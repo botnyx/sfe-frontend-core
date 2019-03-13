@@ -46,7 +46,7 @@ class JsEndpoint{
 		}
 		
 		
-		
+		/*
 		die();
 		return $this->assetProxy->responseWithHeaders($response,$returnedData);
 		
@@ -55,7 +55,7 @@ class JsEndpoint{
 		//$resWithExpires = $this->cache->withExpires($res, time() + 3600);
 		$responseWithCacheHeader = $this->cacher->withExpires($res, time() + 3600);
 		$responseWithCacheHeader = $this->cacher->withLastModified($responseWithCacheHeader, $returnedData['Last-Modified'] );
-		return $responseWithCacheHeader;
+		return $responseWithCacheHeader;*/
 		
 	}
 	
