@@ -29,6 +29,9 @@ class JsEndpoint{
 		//$this->assetProxy->get("/_/assets/js/".$args['path']);
 		//$this->assetProxy->get("/_/assets/fonts/".$args['path']);
 		
+		#echo _SETTINGS['sfeFrontend']['sfeBackend']."/_/assets/js/".$args['path'];
+		#die();
+		
 		try{
 			$returnedData = $this->assetProxy->get(_SETTINGS['sfeFrontend']['sfeBackend']."/_/assets/js/".$args['path']);		
 		}catch(\Exception $e){
