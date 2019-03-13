@@ -29,7 +29,7 @@ use GuzzleHttp\Exception\ClientException;
 use	GuzzleHttp\Exception\TransferException;
 
 
-class AssetProxy{
+class AssetProxy_Obsolete{
 	
 	function __construct(ContainerInterface $container){
 		
@@ -76,7 +76,7 @@ class AssetProxy{
 		
 		try {
 			
-			$res = $this->client->request('GET',_SETTINGS['sfeFrontend']['sfeBackend'] );	
+			$res = $this->client->request('GET',$uri );	
 			
 		}catch(\Exception $e){
 			throw new \Exception($e->getMessage(),$e->getCode());
