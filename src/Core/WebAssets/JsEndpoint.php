@@ -19,14 +19,15 @@ class JsEndpoint{
 	function __construct(ContainerInterface $container){
 		$this->cacher = $container->get('cache');
 		
-		$this->container = $container;
-		
 		$this->assetProxy = new \Botnyx\Sfe\Shared\WebAssets\AssetProxy($container);
 		
 		$this->allowOrigin = $container->get("settings")['paths']['url'];
+		
+		$this->expireTime = time() + (3600*24)*357;
 	}
 	
 	function get(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
+		
 		
 		
 		try{
@@ -38,12 +39,17 @@ class JsEndpoint{
 			}else{
 				return $response->withStatus( $e->getCode() )->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);;
 			}
-			//$e->getCode();
+			
 			
 		}
-		//print_r($res);
 		
-		//die(_SETTINGS['sfeFrontend']['sfeBackend']."/_/assets/js/".$args['path']);
+		
+		/*
+			Set the cache headers.
+		*/
+		$res = $res->withHeader('Cache-Control','public');
+		$res = $res->withHeader('Pragma','public');
+		$res = $this->cacher->withExpires($res, $this->expireTime);
 		
 		
 		return $res->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);

@@ -19,6 +19,8 @@ class FontEndpoint{
 		$this->assetProxy = new \Botnyx\Sfe\Shared\WebAssets\AssetProxy($container);
 		
 		$this->allowOrigin = $container->get("settings")['paths']['url'];
+		
+		$this->expireTime = time() + (3600*24)*357;
 	}
 	
 	function get(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
@@ -35,6 +37,13 @@ class FontEndpoint{
 			//$e->getCode();
 			
 		}
+		
+		/*
+			Set the cache headers.
+		*/
+		$res = $res->withHeader('Cache-Control','public');
+		$res = $res->withHeader('Pragma','public');
+		$res = $this->cacher->withExpires($res, $this->expireTime);
 		
 		
 		
