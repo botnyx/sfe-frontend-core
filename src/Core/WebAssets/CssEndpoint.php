@@ -22,13 +22,9 @@ class CssEndpoint{
 	
 	function get(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
 		
-		//$parsedPath = $this->parsePath($args['path'],$request->getAttributes('route')['routeInfo']);
-		
-		//$this->assetProxy->get("/_/assets/js/".$args['path']);
-		//$this->assetProxy->get("/_/assets/fonts/".$args['path']);
 		
 		try{
-			$returnedData = $this->assetProxy->get(_SETTINGS['sfeFrontend']['sfeBackend']."/_/assets/css/".$args['path']);		
+			return  $this->assetProxy->get($response, _SETTINGS['sfeFrontend']['sfeBackend']."/_/assets/js/".$args['path']);		
 		}catch(\Exception $e){
 			if($e->getCode()==404){
 				return $this->assetProxy->e404($response);
@@ -41,11 +37,6 @@ class CssEndpoint{
 		}
 		
 		
-		$res = $response->write( $returnedData['html'] )->withHeader('Content-Type',$returnedData['Content-Type']);
-		//$resWithExpires = $this->cache->withExpires($res, time() + 3600);
-		$responseWithCacheHeader = $this->cacher->withExpires($res, time() + 3600);
-		$responseWithCacheHeader = $this->cacher->withLastModified($responseWithCacheHeader, $returnedData['Last-Modified'] );
-		return $responseWithCacheHeader;
 		
 	}
 	

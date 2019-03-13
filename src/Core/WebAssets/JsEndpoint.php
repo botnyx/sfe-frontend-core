@@ -33,7 +33,7 @@ class JsEndpoint{
 		#die();
 		
 		try{
-			$returnedData = $this->assetProxy->get(_SETTINGS['sfeFrontend']['sfeBackend']."/_/assets/js/".$args['path']);		
+			return  $this->assetProxy->get($response, _SETTINGS['sfeFrontend']['sfeBackend']."/_/assets/js/".$args['path']);		
 		}catch(\Exception $e){
 			if($e->getCode()==404){
 				return $this->assetProxy->e404($response);
@@ -44,6 +44,11 @@ class JsEndpoint{
 			//$e->getCode();
 			
 		}
+		
+		
+		
+		die();
+		return $this->assetProxy->responseWithHeaders($response,$returnedData);
 		
 		
 		$res = $response->write( $returnedData['html'] )->withHeader('Content-Type',$returnedData['Content-Type']);
