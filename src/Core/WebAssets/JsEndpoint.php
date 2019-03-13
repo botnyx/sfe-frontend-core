@@ -30,7 +30,7 @@ class JsEndpoint{
 		//$this->assetProxy->get("/_/assets/fonts/".$args['path']);
 		
 		try{
-			$returnedData = $this->assetProxy->get("/_/assets/js/".$args['path']);		
+			$returnedData = $this->assetProxy->get(_SETTINGS['sfeFrontend']['sfeBackend']."/_/assets/js/".$args['path']);		
 		}catch(\Exception $e){
 			if($e->getCode()==404){
 				return $this->assetProxy->e404($response);
