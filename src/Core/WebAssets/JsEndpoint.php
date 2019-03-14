@@ -40,7 +40,17 @@ class JsEndpoint{
 				return $this->assetProxy->e404($response)->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);;
 				//return $response->withStatus(404);
 			}else{
-				return $response->withStatus( $e->getCode() )->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);;
+				//return $this->assetProxy->e404($response)->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);;
+				//throw new \Exception( $e->getMessage(), $e->getCode() );
+				//print_r($e->getBody());
+				#print_r($e->getCode());
+				#print_r($e->getMessage());
+				return $this->assetProxy->e500($response)->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);;
+				//$response = \Botnyx\Sfe\Shared\ExceptionResponse::get($response,$e->getCode(),'Cdn reports: 404 Not Found');
+				//return $response;
+				//die("xxx");
+				//
+				return $response->withStatus( $e->getCode() );//->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);;
 			}
 			
 			
