@@ -21,7 +21,7 @@ class SlimLogic {
 				
 			
 			
-				print_r($c->get('settings')['sfe']);
+				#print_r($c->get('settings')['sfe']);
 			
 				/*
 					if frontend is enabled, serve it...  else 403
@@ -42,8 +42,8 @@ class SlimLogic {
 					);
 				
 			
-			
-				//print_r($c->get('settings'));
+				echo "<pre>";
+				print_r($c->get('settings'));
 				
 				die("frontend/slimlogic.php");
 				
