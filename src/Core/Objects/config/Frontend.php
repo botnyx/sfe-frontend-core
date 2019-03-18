@@ -15,7 +15,7 @@ class Frontend {
 			throw new \Exception("Fatal Error in Configuration.ini : Missing `clientId` in the `sfeFrontend` section.");
 		}
 		
-		$this->clientId = $settings['sfeFrontend']['clientId'];
+		$this->clientid = $settings['sfeFrontend']['clientId'];
 		
 		
 		if(array_key_exists('clientSecret',$settings['sfeFrontend'])){
@@ -23,7 +23,7 @@ class Frontend {
 		}
 		
 		
-				$hosts = new \Botnyx\Sfe\Shared\Objects\config\SfeHosts();
+		$hosts = new \Botnyx\Sfe\Shared\Objects\config\SfeHosts();
 			
 		if(!array_key_exists('sfeCdn',$settings['sfeFrontend'])){
 			throw new \Exception("Fatal Error in Configuration.ini : Missing `sfeCdn` in the `sfeFrontend` section.");
@@ -44,7 +44,7 @@ class Frontend {
 		}
 		$hosts->auth = $settings['sfeFrontend']['sfeAuth'];
 		
-
+		$this->hosts = $hosts;
 	}
 	
 	
