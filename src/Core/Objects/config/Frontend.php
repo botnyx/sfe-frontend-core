@@ -2,7 +2,6 @@
 
 namespace Botnyx\Sfe\Frontend\Core\Objects\config;
 
-//namespace Botnyx\Sfe\Backend\Core;
 
 class Frontend {
 	
