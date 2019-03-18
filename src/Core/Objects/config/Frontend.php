@@ -26,7 +26,7 @@ class Frontend {
 		
 		
 		
-		$hosts = new Botnyx\Sfe\Shared\Objects\config\SfeHosts();
+		$hosts = new \Botnyx\Sfe\Shared\Objects\config\SfeHosts();
 			
 		if(!array_key_exists('sfeCdn',$settings['sfeFrontend'])){
 			throw new \Exception("Fatal Error in Configuration.ini : Missing `sfeCdn` in the `sfeFrontend` section.");
