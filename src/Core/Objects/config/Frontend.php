@@ -7,7 +7,6 @@ class Frontend {
 	
 	var $clientid="";
 	var $clientsecret="";
-	var $conn;
 	
 	function __construct($settings){
 		
