@@ -31,19 +31,32 @@ class Frontend {
 		if(!array_key_exists('sfeCdn',$settings['sfeFrontend'])){
 			throw new \Exception("Fatal Error in Configuration.ini : Missing `sfeCdn` in the `sfeFrontend` section.");
 		}
-
-
 		$hosts->cdn = $settings['sfeFrontend']['sfeCdn'];
+
+
+
 
 		if(!array_key_exists('sfeBackend',$settings['sfeFrontend'])){
 			throw new \Exception("Fatal Error in Configuration.ini : Missing `sfeBackend` in the `sfeFrontend` section.");
 		}
 		$hosts->backend = $settings['sfeFrontend']['sfeBackend'];
 
+		if(!array_key_exists('sfeFrontend',$settings['sfeFrontend'])){
+			throw new \Exception("Fatal Error in Configuration.ini : Missing `sfeFrontend` in the `sfeFrontend` section.");
+		}
+		$hosts->frontend = $settings['sfeFrontend']['sfeFrontend'];
+
+
+
+
+
 		if(!array_key_exists('sfeAuth',$settings['sfeFrontend'])){
 			throw new \Exception("Fatal Error in Configuration.ini : Missing `sfeAuth` in the `sfeFrontend` section.");
 		}
 		$hosts->auth = $settings['sfeFrontend']['sfeAuth'];
+
+
+
 
 		$this->hosts = $hosts;
 	}

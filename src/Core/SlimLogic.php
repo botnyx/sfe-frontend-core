@@ -12,6 +12,10 @@ class SlimLogic {
 	
 	public function getContainer($container){
 		
+		
+		
+		
+		
 		$container['cache'] = function ($c) {
 			return new \Slim\HttpCache\CacheProvider();
 		};
@@ -19,7 +23,11 @@ class SlimLogic {
 		
 		$container['frontendconfig'] = function($c){
 				
-			
+			$sfeSettings = $c->get('settings')['sfe'];
+			$sfePaths = $c->get('settings')['paths'];
+			#print_r($Settings);
+
+			#die();
 			
 				#print_r($c->get('settings')['sfe']);
 			
@@ -34,17 +42,17 @@ class SlimLogic {
 					  new \Kevinrob\GuzzleCache\CacheMiddleware(
 						new \Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy(
 						  new \Kevinrob\GuzzleCache\Storage\DoctrineCacheStorage(
-							new \Doctrine\Common\Cache\FilesystemCache($c->get('settings')['paths']['temp'].'/guzl')
+							new \Doctrine\Common\Cache\FilesystemCache($sfePaths['temp'].'/guzl')
 						  )
 						)
 					  ),
 					  'cache'
 					);
 				
-			
-				echo "<pre>";
-				print_r($c->get('settings'));
 				
+				echo "<pre>";
+				print_r( $sfePaths );
+				print_r( $sfeSettings );
 				die("frontend/slimlogic.php");
 				
 			
