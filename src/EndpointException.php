@@ -11,12 +11,18 @@ class EndpointException {
 	var $debug = false;
 	
 	
-	function __construct($rootdir){
+	function __construct($settings ){
 		
-		$this->debug = (int)_SETTINGS['twig']['debug'];
-		$this->rootdir = _SETTINGS['paths']['root'];
 		
-		$this->view = new \Slim\Views\Twig( $rootdir.'/vendor/botnyx/sfe-shared-core/templates/errorPages', [
+		#print_r($settings['sfe']);
+		#die();
+		
+		$this->rootdir= $settings['paths']['root'];
+		
+		$this->debug = 1;
+		#$this->rootdir = _SETTINGS['paths']['root'];
+		
+		$this->view = new \Slim\Views\Twig( $this->rootdir.'/vendor/botnyx/sfe-shared-core/templates/errorPages', [
 			'cache' => false
 		]);
 		

@@ -29,11 +29,15 @@ class Endpoint {
 	function __construct(ContainerInterface $container){
         
 		$this->cacher = $container->get('cache');
+		$this->settings = $container->get('settings');
 		//$this->frontEndConfig =  $container->get('frontEndConfig');
 
-		$cacheDirectory = sys_get_temp_dir();
-
-
+		
+		
+		
+		$cacheDirectory = $this->settings['paths']['temp']."/endpointcache";
+		$this->settings['sfe']->hosts;
+		
 		// Create default HandlerStack
 		$this->_stack = \GuzzleHttp\HandlerStack::create();
 		$this->_stack->push(
@@ -52,13 +56,19 @@ class Endpoint {
 			'http_errors'=>true
 		]);
 		
-		$this->errorPage = new \Botnyx\Sfe\Frontend\EndpointException( _SETTINGS['paths']['root']);
+		
+		
+		//['paths']['root']
+		$this->errorPage = new \Botnyx\Sfe\Frontend\EndpointException( $this->settings);
 
     }
 
 	public function get(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
-
-
+		$Backend = "https://".$this->settings['sfe']->hosts->backend;
+		$Clientid = $this->settings['sfe']->clientid;
+		
+		
+		
 		#$request->getQueryParams();
 		#$request->getUri()->getPath();
 
@@ -69,9 +79,9 @@ class Endpoint {
 
 		//die(_SETTINGS['sfeFrontend']['clientId']);
 		//error_log("yes!");
-		error_log( _SETTINGS['sfeFrontend']['sfeBackend'].'/api/sfe/'._SETTINGS['sfeFrontend']['clientId'].'/uri'.$request->getUri()->getPath()."?".http_build_query($args) );
+		error_log( $Backend.'/api/sfe/'.$Clientid.'/uri'.$request->getUri()->getPath()."?".http_build_query($args) );
 		try{
-			$res = $this->client->request('GET', _SETTINGS['sfeFrontend']['sfeBackend'].'/api/sfe/'._SETTINGS['sfeFrontend']['clientId'].'/uri'.$request->getUri()->getPath()."?".http_build_query($args) );
+			$res = $this->client->request('GET', $Backend.'/api/sfe/'.$Clientid.'/uri'.$request->getUri()->getPath()."?".http_build_query($args) );
 
 		} catch (ClientException $e) {
 			
@@ -95,8 +105,9 @@ class Endpoint {
 					
 					*/
 					$remote_error = json_decode( (string) $e->getResponse()->getBody() );
-					$endpointException = new \Botnyx\Sfe\Frontend\EndpointException( _SETTINGS['paths']['root'] );
-					return $endpointException->backendException($response,$remote_error);
+					
+					
+					return $this->errorPage->backendException($response,$remote_error);
 					
 				}else{
 					/*
@@ -109,9 +120,9 @@ class Endpoint {
 				/*
 					the error has no response.
 				*/
-				$endpointException = new \Botnyx\Sfe\Frontend\EndpointException( _SETTINGS['paths']['root'] );
+				
 
-				return $endpointException->TransferException($response,$e->getMessage(),__FILE__);
+				return $this->errorPage->TransferException($response,$e->getMessage(),__FILE__);
 			}
 			
 			
@@ -140,10 +151,11 @@ class Endpoint {
 
 	public function getServiceWorker(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
 
+		$Backend = "https://".$this->settings['sfe']->hosts->backend;
+		$Clientid = $this->settings['sfe']->clientid;
 
 
-
-		$res = $this->client->request('GET', _SETTINGS['sfeFrontend']['sfeBackend'].'/api/sfe/'._SETTINGS['sfeFrontend']['clientId'].'/ui/sw');
+		$res = $this->client->request('GET', $Backend.'/api/sfe/'.$Clientid.'/ui/sw');
 
 
 		return $response->write($res->getBody())->withHeader("content-type","application/javascript; charset=utf-8");

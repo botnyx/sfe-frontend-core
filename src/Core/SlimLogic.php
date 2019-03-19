@@ -71,11 +71,11 @@ class SlimLogic {
 					die($e->getMessage());
 				}
 
-				echo "<pre>";
-				var_dump($frontEndConfig);
-				die($res->getBody());
+				#echo "<pre>";
+				#var_dump($frontEndConfig);
+				//die($res->getBody());
 
-			die("frontend/slimlogic.php");
+			#die("frontend/slimlogic.php");
 				
 				return $frontEndConfig->data;
 		};
