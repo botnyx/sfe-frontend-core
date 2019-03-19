@@ -18,12 +18,16 @@ class JsEndpoint{
 
 	function __construct(ContainerInterface $container){
 		$this->cacher = $container->get('cache');
-
+		$this->settings=$container->get("settings");
+		#echo "<pre>";
+		#print_r( $container->get("settings") );
+		#die();
+		
 		$this->assetProxy = new \Botnyx\Sfe\Shared\WebAssets\AssetProxy($container);
 
-		$this->client_id = $container->get("settings")['sfe']['clientId'];
+		$this->client_id = $this->settings['sfe']->clientId;
 
-		$this->allowOrigin = $container->get("settings")['paths']['url'];
+		$this->allowOrigin = "https://".$this->settings['sfe']->hosts->frontend;
 
 		$this->expireTime = time() + (3600*24)*357;
 	}
@@ -34,7 +38,7 @@ class JsEndpoint{
 		//die();
 
 		try{
-			$res =  $this->assetProxy->get($response, _SETTINGS['sfeFrontend']['sfeBackend']."/_/assets/".$this->client_id."/js/".$args['path']);
+			$res =  $this->assetProxy->get($response,'https'.$this->settings['sfe']->hosts->backend."/_/assets/".$this->client_id."/js/".$args['path']);
 		}catch(\Exception $e){
 			if($e->getCode()==404){
 				return $this->assetProxy->e404($response)->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);;

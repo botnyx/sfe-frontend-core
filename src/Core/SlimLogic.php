@@ -107,7 +107,7 @@ class SlimLogic {
 		$app->get( '/a/css/[{path:.*}]',   '\\Botnyx\\Sfe\\Frontend\\Core\\WebAssets\\CssEndpoint:get' );
 		$app->get( '/a/fonts/[{path:.*}]', '\\Botnyx\\Sfe\\Frontend\\Core\\WebAssets\\FontEndpoint:get' );
 
-
+/*
 		$app->get('/expiretest',  function ( $request,  $response, array $args){
 
 				// https://backend.devpoc.nl/api/cfg/myclientId
@@ -136,6 +136,8 @@ class SlimLogic {
 		  return $response->write($res);
 
 		});
+		
+		*/
 		return $app;
 	}
 
