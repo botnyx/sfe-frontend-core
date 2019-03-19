@@ -50,32 +50,33 @@ class SlimLogic {
 					);
 				
 				
-				echo "<pre>";
-				print_r( $sfePaths );
-				print_r( $sfeSettings );
-				die("frontend/slimlogic.php");
+				#echo "<pre>";
+				#print_r( $sfePaths );
+				#print_r( $sfeSettings->clientid );
 				
 			
 			
-				$headers = ['referer' => 'https://'._SETTINGS['paths']['fdqn'],'origin' => 'https://'._SETTINGS['paths']['fdqn'] ];
+				$headers = ['referer' => 'https://'.$sfeSettings->hosts->frontend,'origin' => 'https://'.$sfeSettings->hosts->frontend ];
 
-				$cachedClient = new GuzzleHttp\Client([
+				$cachedClient = new \GuzzleHttp\Client([
 					'headers' => $headers,
 					'handler' => $stack
 				]);
 
 				try{
-					$res = $cachedClient->request('GET', _SETTINGS['sfeFrontend']['sfeBackend'].'/api/cfg/'.$c->get('settings')['sfe']->clientid);
+					$res = $cachedClient->request('GET', $sfeSettings->hosts->backend.'/api/cfg/'.$sfeSettings->clientid);
+					
 					$frontEndConfig = json_decode($res->getBody());
 				}catch(Exception $e){
 					die($e->getMessage());
 				}
 
-				#echo "<pre>";
-				#print_r($frontEndConfig);
-				#die();
+				echo "<pre>";
+				var_dump($frontEndConfig);
+				die($res->getBody());
 
-
+			die("frontend/slimlogic.php");
+				
 				return $frontEndConfig->data;
 		};
 
