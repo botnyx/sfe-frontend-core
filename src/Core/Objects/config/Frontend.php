@@ -28,8 +28,9 @@ class Frontend {
 		if(!array_key_exists('sfeCdn',$settings['sfeFrontend'])){
 			throw new \Exception("Fatal Error in Configuration.ini : Missing `sfeCdn` in the `sfeFrontend` section.");
 		}
-		$hosts->cdn = $settings['sfeFrontend']['sfeCdn'];
 		
+		
+		$hosts->cdn = $settings['sfeFrontend']['sfeCdn'];
 		
 		
 		if(!array_key_exists('sfeBackend',$settings['sfeFrontend'])){
