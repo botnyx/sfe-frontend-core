@@ -18,10 +18,10 @@ class Frontend {
 		$this->clientid = $settings['sfeFrontend']['clientId'];
 		
 		
+		
 		if(array_key_exists('clientSecret',$settings['sfeFrontend'])){
 			$this->clientsecret = new \Botnyx\Sfe\Shared\ProtectedValue($settings['sfeFrontend']['clientSecret']);
 		}
-		
 		
 		$hosts = new \Botnyx\Sfe\Shared\Objects\config\SfeHosts();
 			
