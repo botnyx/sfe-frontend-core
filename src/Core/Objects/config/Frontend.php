@@ -23,6 +23,9 @@ class Frontend {
 			$this->clientsecret = new \Botnyx\Sfe\Shared\ProtectedValue($settings['sfeFrontend']['clientSecret']);
 		}
 		
+		
+		
+		
 		$hosts = new \Botnyx\Sfe\Shared\Objects\config\SfeHosts();
 			
 		if(!array_key_exists('sfeCdn',$settings['sfeFrontend'])){
@@ -32,13 +35,10 @@ class Frontend {
 		
 		$hosts->cdn = $settings['sfeFrontend']['sfeCdn'];
 		
-		
 		if(!array_key_exists('sfeBackend',$settings['sfeFrontend'])){
 			throw new \Exception("Fatal Error in Configuration.ini : Missing `sfeBackend` in the `sfeFrontend` section.");
 		}
 		$hosts->backend = $settings['sfeFrontend']['sfeBackend'];
-		
-		
 		
 		if(!array_key_exists('sfeAuth',$settings['sfeFrontend'])){
 			throw new \Exception("Fatal Error in Configuration.ini : Missing `sfeAuth` in the `sfeFrontend` section.");
