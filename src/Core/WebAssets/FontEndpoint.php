@@ -19,7 +19,7 @@ class FontEndpoint{
 		$this->assetProxy = new \Botnyx\Sfe\Shared\WebAssets\AssetProxy($container);
 		
 		$this->sfe =$container->get("sfe");
-		
+		$this->client_id = $this->sfe->clientid;
 		
 		$this->allowOrigin = "https://".$this->sfe->hosts->frontend;
 		

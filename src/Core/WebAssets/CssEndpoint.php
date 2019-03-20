@@ -18,6 +18,7 @@ class CssEndpoint{
 		$this->cacher = $container->get('cache');
 		$this->sfe =$container->get("sfe");
 		
+		
 		$this->assetProxy = new \Botnyx\Sfe\Shared\WebAssets\AssetProxy($container);
 		
 		$this->allowOrigin = "https://".$this->sfe->hosts->frontend;

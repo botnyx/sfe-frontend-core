@@ -28,7 +28,7 @@ class JsEndpoint{
 		
 		$this->assetProxy = new \Botnyx\Sfe\Shared\WebAssets\AssetProxy($container);
 
-		$this->client_id = $this->sfe->clientId;
+		$this->client_id = $this->sfe->clientid;
 
 		$this->allowOrigin = "https://".$this->sfe->hosts->frontend;
 
