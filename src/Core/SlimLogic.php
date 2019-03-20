@@ -12,7 +12,15 @@ class SlimLogic {
 	
 	public function getContainer($container){
 		
+		#print_r($container->get('sfe'));
+		#die();
+		#$container->get('sfe')->clientid;
+		#$container->get('sfe')->paths->templates;
+		#$container->get('sfe')->paths->temp;
+		#$container->get('sfe')->paths->root;
 		
+		#$container->get('sfe')->hosts->backend;
+		#$container->get('sfe')->debug;
 		
 		
 		
@@ -42,7 +50,7 @@ class SlimLogic {
 					  new \Kevinrob\GuzzleCache\CacheMiddleware(
 						new \Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy(
 						  new \Kevinrob\GuzzleCache\Storage\DoctrineCacheStorage(
-							new \Doctrine\Common\Cache\FilesystemCache($sfePaths['temp'].'/guzl')
+							new \Doctrine\Common\Cache\FilesystemCache($c->get('sfe')->paths->temp.'/guzl')
 						  )
 						)
 					  ),
@@ -56,7 +64,7 @@ class SlimLogic {
 				
 			
 			
-				$headers = ['referer' => 'https://'.$sfeSettings->hosts->frontend,'origin' => 'https://'.$sfeSettings->hosts->frontend ];
+				$headers = ['referer' => 'https://'.$c->get('sfe')->hosts->frontend,'origin' => 'https://'.$c->get('sfe')->hosts->frontend ];
 
 				$cachedClient = new \GuzzleHttp\Client([
 					'headers' => $headers,
@@ -64,7 +72,7 @@ class SlimLogic {
 				]);
 
 				try{
-					$res = $cachedClient->request('GET', $sfeSettings->hosts->backend.'/api/cfg/'.$sfeSettings->clientid);
+					$res = $cachedClient->request('GET', $c->get('sfe')->hosts->backend.'/api/cfg/'.$c->get('sfe')->clientid);
 					
 					$frontEndConfig = json_decode($res->getBody());
 				}catch(Exception $e){
