@@ -16,10 +16,11 @@ class CssEndpoint{
 	
 	function __construct(ContainerInterface $container){
 		$this->cacher = $container->get('cache');
+		$this->sfe =$container->get("sfe");
 		
 		$this->assetProxy = new \Botnyx\Sfe\Shared\WebAssets\AssetProxy($container);
 		
-		$this->allowOrigin = $container->get("settings")['paths']['url'];
+		$this->allowOrigin = "https://".$this->sfe->hosts->frontend;
 		
 		$this->expireTime = time() + (3600*24)*357;
 		
@@ -29,7 +30,7 @@ class CssEndpoint{
 		
 		
 		try{
-			$res =  $this->assetProxy->get($response, _SETTINGS['sfeFrontend']['sfeBackend']."/_/assets/css/".$args['path']);		
+			$res =  $this->assetProxy->get($response, $this->sfe->hosts->backend."/_/assets/css/".$args['path']);		
 		}catch(\Exception $e){
 			if($e->getCode()==404){
 				return $this->assetProxy->e404($response)->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);;

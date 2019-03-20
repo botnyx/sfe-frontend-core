@@ -18,7 +18,10 @@ class FontEndpoint{
 		
 		$this->assetProxy = new \Botnyx\Sfe\Shared\WebAssets\AssetProxy($container);
 		
-		$this->allowOrigin = $container->get("settings")['paths']['url'];
+		$this->sfe =$container->get("sfe");
+		
+		
+		$this->allowOrigin = "https://".$this->sfe->hosts->frontend;
 		
 		$this->expireTime = time() + (3600*24)*357;
 	}
@@ -26,7 +29,7 @@ class FontEndpoint{
 	function get(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
 		
 		try{
-			$res =  $this->assetProxy->get($response, _SETTINGS['sfeFrontend']['sfeBackend']."/_/assets/fonts/".$args['path']);		
+			$res =  $this->assetProxy->get($response, $this->sfe->hosts->backend."/_/assets/fonts/".$args['path']);		
 		}catch(\Exception $e){
 			if($e->getCode()==404){
 				return $this->assetProxy->e404($response)->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);;
