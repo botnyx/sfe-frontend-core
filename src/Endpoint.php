@@ -29,14 +29,28 @@ class Endpoint {
 	function __construct(ContainerInterface $container){
         
 		$this->cacher = $container->get('cache');
-		$this->settings = $container->get('settings');
-		//$this->frontEndConfig =  $container->get('frontEndConfig');
-
+		$this->sfe = $container->get('sfe');
+		
+		
+		//$this->sfe->clientid
+		//$this->sfe->paths->temp
+		//$this->sfe->hosts->backend
+		
+		#print_r($container->get('sfe'));
+		#die();
+		#$container->get('sfe')->clientid;
+		#$container->get('sfe')->paths->templates;
+		#$container->get('sfe')->paths->temp;
+		#$container->get('sfe')->paths->root;
+		
+		#$container->get('sfe')->hosts->backend;
+		#$container->get('sfe')->debug;
 		
 		
 		
-		$cacheDirectory = $this->settings['paths']['temp']."/endpointcache";
-		$this->settings['sfe']->hosts;
+		
+		$cacheDirectory = $this->sfe->paths->temp."/endpointcache";
+		//$this->settings['sfe']->hosts;
 		
 		// Create default HandlerStack
 		$this->_stack = \GuzzleHttp\HandlerStack::create();
@@ -59,13 +73,13 @@ class Endpoint {
 		
 		
 		//['paths']['root']
-		$this->errorPage = new \Botnyx\Sfe\Frontend\EndpointException( $this->settings);
+		$this->errorPage = new \Botnyx\Sfe\Frontend\EndpointException( $this->sfe);
 
     }
 
 	public function get(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
-		$Backend = "https://".$this->settings['sfe']->hosts->backend;
-		$Clientid = $this->settings['sfe']->clientid;
+		$Backend = "https://".$this->sfe->hosts->backend;
+		$Clientid = $this->sfe->clientid;
 		
 		
 		
@@ -151,8 +165,8 @@ class Endpoint {
 
 	public function getServiceWorker(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
 
-		$Backend = "https://".$this->settings['sfe']->hosts->backend;
-		$Clientid = $this->settings['sfe']->clientid;
+		$Backend = "https://".$this->sfe->hosts->backend;
+		$Clientid = $this->sfe->clientid;
 
 
 		$res = $this->client->request('GET', $Backend.'/api/sfe/'.$Clientid.'/ui/sw');
