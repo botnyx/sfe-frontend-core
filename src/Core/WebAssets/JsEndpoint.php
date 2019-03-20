@@ -47,6 +47,9 @@ class JsEndpoint{
 				return $this->assetProxy->e404($response)->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);;
 				//return $response->withStatus(404);
 			}else{
+				
+				die('https'.$this->sfe->hosts->backend."/_/assets/".$this->client_id."/js/".$args['path']);
+				
 				return $this->assetProxy->e500($response)->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);;
 
 				//die();
