@@ -15,15 +15,19 @@ class Routes {
 			
 		//	$app->map(['GET', 'POST'], $route->uri, $route->fnc )->setName('endpoint-'.$route->id);
 			
+			if(strtoupper($route->method)=='POST'){
+				$app->post( $route->uri,$route->fnc )->setName('endpoint-'.$route->id);
+			}else{
+				$app->get ( $route->uri,$route->fnc )->setName('endpoint-'.$route->id);
+			}
 			
-			$app->get( $route->uri,$route->fnc )->setName('endpoint-'.$route->id);
 
 		}
 		//$frontEndConfig['routes'];
 
-		$app->get( '/a/js/[{path:.*}]',    '\\Botnyx\\Sfe\\Frontend\\Core\\WebAssets\\JsEndpoint:get' );
-		$app->get( '/a/css/[{path:.*}]',   '\\Botnyx\\Sfe\\Frontend\\Core\\WebAssets\\CssEndpoint:get' );
-		$app->get( '/a/fonts/[{path:.*}]', '\\Botnyx\\Sfe\\Frontend\\Core\\WebAssets\\FontEndpoint:get' );
+		$app->get( '/a/js/[{path:.*}]',   '\\Botnyx\\Sfe\\Frontend\\Core\\WebAssets\\JsEndpoint:get' );
+		$app->get( '/a/css/[{path:.*}]',  '\\Botnyx\\Sfe\\Frontend\\Core\\WebAssets\\CssEndpoint:get' );
+		$app->get( '/a/fonts/[{path:.*}]','\\Botnyx\\Sfe\\Frontend\\Core\\WebAssets\\FontEndpoint:get' );
 
 /*
 		$app->get('/expiretest',  function ( $request,  $response, array $args){
