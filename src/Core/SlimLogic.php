@@ -6,6 +6,7 @@ namespace Botnyx\Sfe\Frontend\Core;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+use Botnyx\Sfe\Frontend\Logic as Logic;
 
 class SlimLogic {
 		function __construct(){
