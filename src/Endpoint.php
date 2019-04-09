@@ -84,7 +84,7 @@ class Endpoint {
 		$Clientid = $this->sfe->clientid;
 		$theEndpointId = (int)str_replace('endpoint-','',$request->getAttribute("route")->getName());
 		
-		
+		$language = "nl";
 		//echo $Backend.'/api/sfe/'.$Clientid.'/uri/'.$theEndpointId."?".http_build_query($args);
 		
 		
@@ -122,9 +122,9 @@ class Endpoint {
 		
 		//die(_SETTINGS['sfeFrontend']['clientId']);
 		//error_log("yes!");
-		error_log( $Backend.'/api/sfe/'.$Clientid.'/uri/'.$theEndpointId."?".http_build_query($args) );
+		error_log( $Backend.'/api/sfe/'.$Clientid.'/uri/'.$language.'/'.$theEndpointId."?".http_build_query($args) );
 		try{
-			$res = $this->client->request('GET', $Backend.'/api/sfe/'.$Clientid.'/uri/'.$theEndpointId."?".http_build_query($args) );
+			$res = $this->client->request('GET', $Backend.'/api/sfe/'.$Clientid.'/uri/'.$language.'/'.$theEndpointId."?".http_build_query($args) );
 
 		} catch (ClientException $e) {
 			
