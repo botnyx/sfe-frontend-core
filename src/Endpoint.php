@@ -31,6 +31,7 @@ class Endpoint {
 		$this->cacher = $container->get('cache');
 		$this->sfe = $container->get('sfe');
 		
+		$this->router = $container->get("router");
 		
 		//$this->sfe->clientid
 		//$this->sfe->paths->temp
@@ -78,24 +79,52 @@ class Endpoint {
     }
 
 	public function get(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
+		
 		$Backend = "https://".$this->sfe->hosts->backend;
 		$Clientid = $this->sfe->clientid;
+		$theEndpointId = (int)str_replace('endpoint-','',$request->getAttribute("route")->getName());
 		
 		
+		//echo $Backend.'/api/sfe/'.$Clientid.'/uri/'.$theEndpointId."?".http_build_query($args);
 		
-		#$request->getQueryParams();
-		#$request->getUri()->getPath();
+		
+		$r = $request->getQueryParams(); // get
+		$request->getParsedBody(); // post
+		
+		$request->getQueryParams();
+		$request->getUri()->getPath();
 
+		
+		
+		
+		
+		
+		
 		#var_dump($request->getUri()->getPath());
 		#var_dump($request->getUri()->getQuery());
 		#var_dump($request->getUri()->getFragment());
-
-
+		
+		
+		//$foo = $request->getAttribute('foo');
+		
+		
+		//echo $app->getContainer()->get('router')->pathFor('hello', ['name' => 'Josh']);
+		
+		//print_r( $request->getAttribute("route")->getArguments() );
+		//print_r( $request->getAttribute("route")->getPattern() );
+		
+		
+		//var_dump( $theEndpointId );
+		
+		
+	//	die("\nfrontend die()");
+		
+		
 		//die(_SETTINGS['sfeFrontend']['clientId']);
 		//error_log("yes!");
-		error_log( $Backend.'/api/sfe/'.$Clientid.'/uri'.$request->getUri()->getPath()."?".http_build_query($args) );
+		error_log( $Backend.'/api/sfe/'.$Clientid.'/uri/'.$theEndpointId."?".http_build_query($args) );
 		try{
-			$res = $this->client->request('GET', $Backend.'/api/sfe/'.$Clientid.'/uri'.$request->getUri()->getPath()."?".http_build_query($args) );
+			$res = $this->client->request('GET', $Backend.'/api/sfe/'.$Clientid.'/uri/'.$theEndpointId."?".http_build_query($args) );
 
 		} catch (ClientException $e) {
 			
