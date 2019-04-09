@@ -13,7 +13,8 @@
     "require": {
 		    "php": ">=7.1",
         "monolog/monolog": "^1.24",
-        "kevinrob/guzzle-cache-middleware": "^3.2"
+        "botnyx/simple-object": "^0.0.7",
+		"kevinrob/guzzle-cache-middleware": "^3.2"
     },
     "require-dev": {
 		    "phpunit/phpunit": "6.*"
