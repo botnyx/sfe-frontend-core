@@ -12,6 +12,7 @@ class RemoteConfig {
 		$this->sfePaths = $container->get('settings')['paths'];
 		
 		
+		$this->sfe = $container->get('sfe');
 	}
 	function get(){
 		
@@ -31,7 +32,7 @@ class RemoteConfig {
 					  new \Kevinrob\GuzzleCache\CacheMiddleware(
 						new \Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy(
 						  new \Kevinrob\GuzzleCache\Storage\DoctrineCacheStorage(
-							new \Doctrine\Common\Cache\FilesystemCache($this->sfePaths['temp'].'/remoteconfig')
+							new \Doctrine\Common\Cache\FilesystemCache($this->sfe->paths->temp.'/remoteconfig')
 						  )
 						)
 					  ),
@@ -45,7 +46,7 @@ class RemoteConfig {
 				
 			
 			
-				$headers = ['referer' => 'https://'.$this->sfeSettings->hosts->frontend,'origin' => 'https://'.$this->sfeSettings->hosts->frontend ];
+				$headers = ['referer' => 'https://'.$this->sfe->configuration->hosts->frontend,'origin' => 'https://'.$this->sfe->configuration->hosts->frontend ];
 
 				$cachedClient = new \GuzzleHttp\Client([
 					'headers' => $headers,
@@ -60,7 +61,7 @@ class RemoteConfig {
 '{"code":200,"status":"ok","statusmsg":"ok","data":{"routes":[{"id":1,"uri":"\/","fnc":"\\Botnyx\\Sfe\\Frontend\\Endpoint:get","tmpl":"botnyx\/freelancer.html","client_id":"909b6bb0-servenow-website"},{"id":2,"uri":"\/newspaper\/edition\/{edition}","fnc":"\\Botnyx\\Sfe\\Frontend\\Endpoint:get","tmpl":"botnyx\/freelancer.html","client_id":"909b6bb0-servenow-website"},{"id":3,"uri":"\/sw.js","fnc":"\\Botnyx\\Sfe\\Frontend\\Endpoint:getServiceWorker","tmpl":null,"client_id":"909b6bb0-servenow-website"},{"id":4,"uri":"\/newspaper","fnc":"\\Botnyx\\Sfe\\Frontend\\Endpoint:get","tmpl":"botnyx\/newspaper","client_id":"909b6bb0-servenow-website"}],"menus":[{"id":1,"link":"#c\/home","text":"home","icon":"entypo-direction","parent":0,"menu":"sfe-nav-main","scopes":null,"sortorder":0,"linkattribute":null,"clientId":"909b6bb0-servenow-website"}],"config":{"client_id":"909b6bb0-servenow-website","template":"blackrockdigital\/startbootstrap-sb-admin-2-master","allowedorigin":"*","htmlstamp":12345,"languages":"en-UK,nl-NL","disabled":0,"disabledreason":null,"defaultpage":"index.html","cdnhostname":"cdn.servenow.nl","backendhostname":"backend.servenow.nl"}}}';
 				*/
 				try{
-					$res = $cachedClient->request('GET', $this->sfeSettings->hosts->backend.'/api/cfg/'.$this->sfeSettings->clientid);
+					$res = $cachedClient->request('GET', $this->sfe->configuration->hosts->backend.'/api/cfg/'.$this->sfe->configuration->clientid);
 					
 					$frontEndConfig = json_decode($res->getBody());
 				}catch(Exception $e){
