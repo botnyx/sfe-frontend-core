@@ -8,9 +8,36 @@ use Psr\Http\Message\ResponseInterface;
 
 
 class SlimLogic {
-	
+		function __construct(){
+		
+		$this->middleware = new Logic\Middleware();
+		$this->container = new Logic\Container();
+		$this->routes = new Logic\Routes();
+		
+	}
 	
 	public function getContainer($container){
+		return $this->container->get($container);
+	}
+	
+	
+	
+	
+	public function getMiddleware($app,$container){
+		return $this->middleware->get($app,$container);
+
+	}
+	
+	
+	
+	
+	public function getRoutes($app,$container){
+		return $this->routes->get($app,$container);
+		
+	}
+
+	
+	public function xgetContainer($container){
 		
 		#print_r($container->get('sfe'));
 		#die();
@@ -21,7 +48,7 @@ class SlimLogic {
 		
 		#$container->get('sfe')->hosts->backend;
 		#$container->get('sfe')->debug;
-		
+		 
 		
 		
 		$container['cache'] = function ($c) {
@@ -95,13 +122,13 @@ class SlimLogic {
 		return $container;
 	}
 	
-	public function getMiddleware($app,$container){
+	public function xgetMiddleware($app,$container){
 		
 		
 		return $app;
 	}
 	
-	public function getRoutes($app,$container){
+	public function xgetRoutes($app,$container){
 		
 		
 		
