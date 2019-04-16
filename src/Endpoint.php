@@ -97,6 +97,9 @@ class Endpoint {
 		//print_r($this->settings);
 		
 		
+		//echo $Backend.'/api/sfe/'.$Clientid.'/uri/'.$request->getAttribute('language').'/'.$theEndpointId."?".http_build_query($args);
+		//die();
+		
 		
 		//$foo = $request->getAttribute('language');
 		
@@ -208,17 +211,27 @@ class Endpoint {
 			'auth' => [$this->sfe->role->clientid, $this->sfe->role->clientsecret],
 			'form_params' => [
 				'grant_type' => 'authorization_code',
-				'code' => '123',
-				'redirect_uri' => ''
+				'code' => $allGetVars['code'],
+				'redirect_uri' => $allGetVars['redirect_uri']
 			]
 		];
 		//"https://".$this->sfe->role->hosts->auth."/oauth2/token";
 		$res = $this->client->request('POST', "https://".$this->sfe->role->hosts->auth."/oauth2/token" ,$extraoption );
 		
-		var_dump($res->getStatusCode() );
+		$result = json_decode($res->getBody()->getContents());
 		
-		var_dump($res->getBody()->getContents);
-		die();
+		//var_dump($res->getStatusCode() );
+		
+		//var_dump($res->getBody()->getContents());
+		//die();
+		
+		$redirect = $allGetVars['redirect_uri']."#access_token=".$result->access_token."&state=".urlencode($allGetVars['state']);
+		
+		return $response->withStatus(302)->withHeader('Location', $redirect);
+		
+		//header("Location: ".$allGetVars['redirect_uri']."#access_token=".$x->access_token."&state=".urlencode($allGetVars['state']));
+
+		
 $clientid="b75d3c0b-ae2a-420b-9635-c910b3ec4ed8";
 $clientsecret="dCHQiWosJn79u_UrFF1YmrTW-a2VbWCtjc5gNbcpGhY";
 
