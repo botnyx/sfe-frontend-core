@@ -27,10 +27,10 @@ use	GuzzleHttp\Exception\TransferException;
 class Endpoint {
 
 	function __construct(ContainerInterface $container){
-        
+        $this->settings = $container->get('settings');
 		$this->cacher = $container->get('cache');
 		$this->sfe = $container->get('sfe');
-		
+		$this->fecfg = $container->get('frontendconfig');
 		$this->router = $container->get("router");
 		
 		//$this->sfe->clientid
@@ -84,7 +84,7 @@ class Endpoint {
 		$Clientid = $this->sfe->clientid;
 		$theEndpointId = (int)str_replace('endpoint-','',$request->getAttribute("route")->getName());
 		
-		$language = "nl";
+		
 		//echo $Backend.'/api/sfe/'.$Clientid.'/uri/'.$theEndpointId."?".http_build_query($args);
 		
 		
@@ -94,37 +94,20 @@ class Endpoint {
 		$request->getQueryParams();
 		$request->getUri()->getPath();
 
+		//print_r($this->settings);
 		
 		
 		
+		//$foo = $request->getAttribute('language');
 		
-		
-		
-		#var_dump($request->getUri()->getPath());
-		#var_dump($request->getUri()->getQuery());
-		#var_dump($request->getUri()->getFragment());
-		
-		
-		//$foo = $request->getAttribute('foo');
-		
-		
-		//echo $app->getContainer()->get('router')->pathFor('hello', ['name' => 'Josh']);
-		
-		//print_r( $request->getAttribute("route")->getArguments() );
-		//print_r( $request->getAttribute("route")->getPattern() );
-		
-		
-		//var_dump( $theEndpointId );
-		
-		
-	//	die("\nfrontend die()");
 		
 		
 		//die(_SETTINGS['sfeFrontend']['clientId']);
 		//error_log("yes!");
-		error_log( $Backend.'/api/sfe/'.$Clientid.'/uri/'.$language.'/'.$theEndpointId."?".http_build_query($args) );
+		error_log( $Backend.'/api/sfe/'.$Clientid.'/uri/'.$request->getAttribute('language').'/'.$theEndpointId."?".http_build_query($args) );
+		
 		try{
-			$res = $this->client->request('GET', $Backend.'/api/sfe/'.$Clientid.'/uri/'.$language.'/'.$theEndpointId."?".http_build_query($args) );
+			$res = $this->client->request('GET', $Backend.'/api/sfe/'.$Clientid.'/uri/'.$request->getAttribute('language').'/'.$theEndpointId."?".http_build_query($args) );
 
 		} catch (ClientException $e) {
 			
@@ -206,8 +189,11 @@ class Endpoint {
 
 		//return $response->write("xx");
 	}
+
 	
 	public function oauthProxy(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
+		
+		$allGetVars = $request->getQueryParams();
 		
 		// Initialize the client with the handler option
 		$client = new \GuzzleHttp\Client([
@@ -215,18 +201,24 @@ class Endpoint {
 			'http_errors'=>true
 		]);
 		
-		$extraoptions =  [
-			'auth' => ['username', 'password'],
+		
+		//var_dump( $this->sfe->role->hosts->auth );
+		
+		$extraoption =  [
+			'auth' => [$this->sfe->role->clientid, $this->sfe->role->clientsecret],
 			'form_params' => [
 				'grant_type' => 'authorization_code',
 				'code' => '123',
 				'redirect_uri' => ''
 			]
 		];
+		//"https://".$this->sfe->role->hosts->auth."/oauth2/token";
+		$res = $this->client->request('POST', "https://".$this->sfe->role->hosts->auth."/oauth2/token" ,$extraoption );
 		
-		$res = $this->client->request('POST', $Backend.'/api/sfe/'.$Clientid.'/uri/'.$language.'/'.$theEndpointId."?".http_build_query($args) ,$extraoption );
+		var_dump($res->getStatusCode() );
 		
-		
+		var_dump($res->getBody()->getContents);
+		die();
 $clientid="b75d3c0b-ae2a-420b-9635-c910b3ec4ed8";
 $clientsecret="dCHQiWosJn79u_UrFF1YmrTW-a2VbWCtjc5gNbcpGhY";
 
@@ -267,6 +259,6 @@ header("Location: ".$_GET['redirect_uri']."#access_token=".$x->access_token."&st
 
 		//return $response->write("xx");
 	}
-	
+		
 	
 }
