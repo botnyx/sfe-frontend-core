@@ -32,7 +32,6 @@ class AssetsEndpoint{
 	function get(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
 		
 		
-		
 		//die( $this->sfe->hosts->backend."/assets/".$this->sfe->clientid."/assets/".$args['path'] );
 		try{
 			$res =  $this->assetProxy->get($response, $this->sfe->hosts->backend."/assets/".$this->sfe->clientid."/assets/".$args['path']);		
