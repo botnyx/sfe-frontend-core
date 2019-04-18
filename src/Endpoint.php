@@ -229,6 +229,48 @@ class Endpoint {
 		
 		return $response->withStatus(302)->withHeader('Location', $redirect);
 		
+		//header("Location: ".$allGetVars['redirect_uri']."#access_token=".$x->access_token."&state=".urlencode($allGetVars['state']));
+
+		
+$clientid="b75d3c0b-ae2a-420b-9635-c910b3ec4ed8";
+$clientsecret="dCHQiWosJn79u_UrFF1YmrTW-a2VbWCtjc5gNbcpGhY";
+
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, "https://account.trustmaster.org/oauth2/token");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_USERPWD, $clientid . ":" . $clientsecret);  
+
+$data = array(
+    'grant_type' => 'authorization_code',
+    'code' => $_GET['code'],
+	'redirect_uri' => $_GET['redirect_uri']
+);
+
+curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+$output = curl_exec($ch);
+$info = curl_getinfo($ch);
+curl_close($ch);	
+
+$x = json_decode($output);
+
+header("Location: ".$_GET['redirect_uri']."#access_token=".$x->access_token."&state=".urlencode($_GET['state']));
+
+		
+		
+		
+		$Backend = "https://".$this->sfe->hosts->backend;
+		$Clientid = $this->sfe->clientid;
+
+
+		$res = $this->client->request('GET', $Backend.'/api/sfe/'.$Clientid.'/ui/sw');
+
+
+		return $response->write($res->getBody())->withHeader("content-type","application/javascript; charset=utf-8");
+
+
+		//return $response->write("xx");
 	}
 		
 	

@@ -18,6 +18,8 @@ class AssetsEndpoint{
 		$this->cacher = $container->get('cache');
 		$this->sfe =$container->get("sfe");
 		
+		//print_r($this->sfe->clientid);
+		//die();
 		
 		$this->assetProxy = new \Botnyx\Sfe\Shared\WebAssets\AssetProxy($container);
 		
@@ -30,8 +32,10 @@ class AssetsEndpoint{
 	function get(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
 		
 		
+		
+		//die( $this->sfe->hosts->backend."/assets/".$this->sfe->clientid."/assets/".$args['path'] );
 		try{
-			$res =  $this->assetProxy->get($response, $this->sfe->hosts->backend."/assets/".$this->sfe->clientid."/".$args['path']);		
+			$res =  $this->assetProxy->get($response, $this->sfe->hosts->backend."/assets/".$this->sfe->clientid."/assets/".$args['path']);		
 		}catch(\Exception $e){
 			if($e->getCode()==404){
 				return $this->assetProxy->e404($response)->withHeader('Access-Control-Allow-Origin',$this->allowOrigin);;
