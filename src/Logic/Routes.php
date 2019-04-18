@@ -10,18 +10,19 @@ class Routes {
 	public function get($app,$container){
 		
 		
-		
-		foreach($container['frontendconfig']->routes as $route){
-			
-		//	$app->map(['GET', 'POST'], $route->uri, $route->fnc )->setName('endpoint-'.$route->id);
-			
-			if(strtoupper($route->method)=='POST'){
-				$app->post( $route->uri,$route->fnc )->setName('endpoint-'.$route->id);
-			}else{
-				$app->get ( $route->uri,$route->fnc )->setName('endpoint-'.$route->id);
-			}
-			
+		if(count($container['frontendconfig']->routes )>0){
+			foreach($container['frontendconfig']->routes as $route){
 
+			//	$app->map(['GET', 'POST'], $route->uri, $route->fnc )->setName('endpoint-'.$route->id);
+
+				if(strtoupper($route->method)=='POST'){
+					$app->post( $route->uri,$route->fnc )->setName('endpoint-'.$route->id);
+				}else{
+					$app->get ( $route->uri,$route->fnc )->setName('endpoint-'.$route->id);
+				}
+
+
+			}
 		}
 		//$frontEndConfig['routes'];
 
