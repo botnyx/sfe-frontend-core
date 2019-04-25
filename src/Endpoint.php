@@ -38,7 +38,6 @@ class Endpoint {
 		//$this->sfe->hosts->backend
 		
 		#print_r($container->get('sfe'));
-		#die();
 		#$container->get('sfe')->clientid;
 		#$container->get('sfe')->paths->templates;
 		#$container->get('sfe')->paths->temp;
@@ -60,7 +59,9 @@ class Endpoint {
 			new PrivateCacheStrategy(
 			  new DoctrineCacheStorage(
 				new FilesystemCache( $cacheDirectory )
-			  )
+			  ),
+			  1, // the TTL in seconds
+			  new KeyValueHttpHeader(['Authorization']) // Optionnal - specify the headers that can change the cache key
 			)
 		  ),
 		  'cache'
@@ -70,7 +71,11 @@ class Endpoint {
 			/*'handler' => $this->_stack,*/
 			'http_errors'=>true
 		]);
-		
+		// Initialize the client with the handler option
+		$this->cachedclient = new \GuzzleHttp\Client([
+			'handler' => $this->_stack,
+			'http_errors'=>true
+		]);
 		
 		
 		//['paths']['root']
@@ -79,6 +84,8 @@ class Endpoint {
     }
 
 	public function get(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
+		
+		$token = $request->getAttribute('token');
 		
 		$Backend = "https://".$this->sfe->hosts->backend;
 		$Clientid = $this->sfe->clientid;
@@ -102,15 +109,19 @@ class Endpoint {
 		
 		
 		//$foo = $request->getAttribute('language');
-		
+		$extraoption =  [
+			'headers' => [
+				'Authorization' => $token,
+			]
+		];
 		
 		
 		//die(_SETTINGS['sfeFrontend']['clientId']);
-		//error_log("yes!");
+		error_log("yes!");
 		error_log( $Backend.'/api/sfe/'.$Clientid.'/uri/'.$request->getAttribute('language').'/'.$theEndpointId."?".http_build_query($args) );
 		
 		try{
-			$res = $this->client->request('GET', $Backend.'/api/sfe/'.$Clientid.'/uri/'.$request->getAttribute('language').'/'.$theEndpointId."?".http_build_query($args) );
+			$res = $this->client->request('GET', $Backend.'/api/sfe/'.$Clientid.'/uri/'.$request->getAttribute('language').'/'.$theEndpointId."?".http_build_query($args) ,$extraoption );
 
 		} catch (ClientException $e) {
 			
@@ -198,6 +209,12 @@ class Endpoint {
 		
 		$allGetVars = $request->getQueryParams();
 		
+		
+		$allGetVars['userState'];
+			
+		
+		//userState=AuthenticatedNotRegistered
+			
 		// Initialize the client with the handler option
 		$client = new \GuzzleHttp\Client([
 			/*'handler' => $this->_stack,*/
@@ -272,6 +289,118 @@ header("Location: ".$_GET['redirect_uri']."#access_token=".$x->access_token."&st
 
 		//return $response->write("xx");
 	}
-		
 	
+	
+	public function My(ServerRequestInterface $request, ResponseInterface $response, array $args = []){
+		$token = $request->getAttribute('token');
+		$language = $request->getAttribute('language');
+		
+		
+		// Initialize the client with the handler option
+		$client = new \GuzzleHttp\Client([
+			/*'handler' => $this->_stack,*/
+			'http_errors'=>true
+		]);
+		$extraoption =  [
+			'headers' => [
+				'Authorization' => $token,
+			]
+		];
+		
+		
+		
+		if($args['endpoint']=='userinfo'){
+			try {
+				//$client->request('GET', 'https://github.com/_abc_123_404');
+				$res = $client->request('GET', "https://".$this->sfe->role->hosts->auth."/oauth2/userinfo" ,$extraoption );
+			} catch (ClientException  $e) {
+				//echo Psr7\str($e->getRequest());
+				return $response->withStatus($e->getCode());
+				
+			}
+			//$res->getStatusCode();
+			//var_dump($res->getBody()->getContents() );
+			
+		}elseif($args['endpoint']=='registration'){
+			
+		}elseif($args['endpoint']=='settings'){
+			
+		}elseif($args['endpoint']=='menu'){
+			
+		}
+		
+		//die("___________");
+		
+		//$res->getStatus();
+		$status = $res->getStatusCode();
+		
+		
+		#print_r($status);
+		#print_r($res);
+		#die();
+		
+		
+		#$args['endpoint'];
+		/*
+			'/my/registration'
+			'/my/userinfo'	
+			'/my/settings'
+			'/my/menu',
+		*/
+		
+		
+		/*
+		
+		GET registration
+			
+		registration.applicationId
+		registration.authenticationToken
+		registration.cleanSpeakId
+		registration.data
+		registration.id
+		registration.insertInstant
+		registration.lastLoginInstant
+		registration.preferredLanguages	
+		registration.roles	
+		registration.timezone	
+		registration.tokens	
+		registration.username	
+		registration.usernameStatus	
+		registration.verified
+			
+		PUT registration
+			generateAuthenticationToken
+			registration.applicationId
+			registration.data
+			registration.preferredLanguages
+			registration.roles
+			registration.timezone
+			registration.username
+			
+			*/
+		
+		
+		
+		
+		#$args['endpoint'];
+		/*
+			'/my/registration'
+			'/my/userinfo'	
+			'/my/settings'
+			'/my/menu',
+		*/
+		#$out = array("x");
+		#return $response->withJson(array($token,$language));
+		
+		
+		
+		
+		//"https://".$this->sfe->role->hosts->auth."/oauth2/token";
+		
+		$result = json_decode($res->getBody()->getContents());
+		//return $response->write($res->getBody()->getContents())->withStatus($status);
+		
+		return $response->withJson($result)->withStatus($status);
+		
+	}
 }
