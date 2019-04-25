@@ -9,25 +9,42 @@ class Routes {
 	
 	public function get($app,$container){
 		
+		$endpointAuth = new \Slim\HttpCache\Cache('public', 86400);
 		
 		
 		foreach($container['frontendconfig']->routes as $route){
 			
-		//	$app->map(['GET', 'POST'], $route->uri, $route->fnc )->setName('endpoint-'.$route->id);
+			//$app->map(['GET', 'POST'], $route->uri, $route->fnc )->setName('endpoint-'.$route->id);
 			
-			if(strtoupper($route->method)=='POST'){
-				$app->post( $route->uri,$route->fnc )->setName('endpoint-'.$route->id);
-			}else{
-				$app->get ( $route->uri,$route->fnc )->setName('endpoint-'.$route->id);
-			}
 			
-
+			
+				if(strtoupper($route->method)=='POST'){
+					
+					if( $route->auth==1 ){
+						$app->post( $route->uri,$route->fnc )->setName('endpoint-'.$route->id)->add($endpointAuth);
+					}else{
+						$app->post( $route->uri,$route->fnc )->setName('endpoint-'.$route->id);
+					}	
+					
+				}else{
+					if( $route->auth==1 ){
+						$app->get ( $route->uri,$route->fnc )->setName('endpoint-'.$route->id)->add($endpointAuth);
+					}else{
+						$app->get ( $route->uri,$route->fnc )->setName('endpoint-'.$route->id);
+					}
+					
+				}
+			
+			
 		}
 		//$frontEndConfig['routes'];
 
 		$app->get( '/a/js/[{path:.*}]',   '\\Botnyx\\Sfe\\Frontend\\Core\\WebAssets\\JsEndpoint:get' );
 		$app->get( '/a/css/[{path:.*}]',  '\\Botnyx\\Sfe\\Frontend\\Core\\WebAssets\\CssEndpoint:get' );
 		$app->get( '/a/fonts/[{path:.*}]','\\Botnyx\\Sfe\\Frontend\\Core\\WebAssets\\FontEndpoint:get' );
+		
+		
+#enable in db		$app->get( '/my/{endpoint}','\\Botnyx\\Sfe\\Frontend\\Core\\WebAssets\\MyEndpoint:get' );
 		
 		$app->get( '/assets/[{path:.*}]','\\Botnyx\\Sfe\\Frontend\\Core\\WebAssets\\AssetsEndpoint:get' );
 /*
