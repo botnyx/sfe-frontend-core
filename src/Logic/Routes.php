@@ -11,6 +11,12 @@ class Routes {
 		
 		$endpointAuth = new \Slim\HttpCache\Cache('public', 86400);
 		
+		$app->options('/{routes:.+}', function ($request, $response, $args) {
+			return $response;
+		})->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization, Referrer,User-Agent')
+            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
+			->withHeader('Access-Control-Allow-Origin', '*');
+		
 		
 		foreach($container['frontendconfig']->routes as $route){
 			
@@ -47,6 +53,7 @@ class Routes {
 #enable in db		$app->get( '/my/{endpoint}','\\Botnyx\\Sfe\\Frontend\\Core\\WebAssets\\MyEndpoint:get' );
 		
 		$app->get( '/assets/[{path:.*}]','\\Botnyx\\Sfe\\Frontend\\Core\\WebAssets\\AssetsEndpoint:get' );
+		
 /*
 		$app->get('/expiretest',  function ( $request,  $response, array $args){
 
