@@ -3,6 +3,7 @@
 namespace Botnyx\Sfe\Frontend\Logic;
 
 use Aura\Accept\AcceptFactory;
+use Slim\Exception\NotFoundException;
 
 
 
@@ -17,6 +18,9 @@ class Middleware {
 			
 			$fecfg = $this->get("frontendconfig");
 			$available_languages = explode( ",",$fecfg->config->languages);
+			
+			
+			
 			
 			
 			if ($request->hasHeader('Cookie')  && isset($_COOKIE['language'])) {
@@ -45,16 +49,27 @@ class Middleware {
 			}
 			
 			
+			if ($request->hasHeader('Cookie')  && isset($_COOKIE['token'])) {
+				// Do something
+				//$language = $_COOKIE['language'];
+				
+				//$request = $request->withAttribute('language', $language );
+				$request = $request->withAttribute('token', "Bearer ".$_COOKIE['token'] );
+			}
 			
 			
-			
-			if ( $request->hasHeader('Authorization') ) {
+			if ( $request->hasHeader('Authorization') && $request->getHeader('Authorization')[0]!="" ) {
 				// Do something
 				//print_r( $request->getHeaders() );
 				//var_dump( $request->getHeader('Authorization')[0] 
 				$request = $request->withAttribute('token', $request->getHeader('Authorization')[0] );
 				//die();
 			}
+			
+			
+			
+			//$request = $request->withAttribute('token', "Bearer: ".$_COOKIE['token'] );
+			
 			if ($request->hasHeader('Accept')) {
 				// Do something
 				// text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
@@ -69,6 +84,22 @@ class Middleware {
 				// clientID header.
 			}
 			
+			
+			
+			
+			
+			
+			$route = $request->getAttribute('route');
+
+			// return NotFound for non existent route
+			if (empty($route)) {
+				throw new NotFoundException($request, $response);
+			}
+
+			$name = $route->getName();
+			$groups = $route->getGroups();
+			$methods = $route->getMethods();
+			$arguments = $route->getArguments();
 			
 			
 			
